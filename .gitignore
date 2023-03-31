@@ -1,2 +1,4 @@
 .idea/
-supplementary_materials/bird_data
+bird_data
+__pycache__/
+*.py[cod]
