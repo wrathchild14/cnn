@@ -83,7 +83,7 @@ Accuracy of the network on val images: 92 %
 Test loss: 0.04202882882021368
 ```
 
-## print(ResNet)
+## Architecture
 
 ```
 ResNet18(
