@@ -52,6 +52,7 @@ def train_bird_model(net, loaded_data, batch_size, epochs, lr):
 
     # Initialize the optimizer
     optimizer = optim.Adam(net.parameters(), lr=lr)
+    # optimizer = optim.SGD(net.parameters(), lr=lr)
 
     # unneeded for now
     # scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[80, 120], gamma=0.1)
