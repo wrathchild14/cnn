@@ -4,6 +4,7 @@ from torch import nn, flatten
 class BasicBlock(nn.Module):
     def __init__(self, in_channels, out_channels, stride=1, expansion=1, down_sample=None):
         super(BasicBlock, self).__init__()
+
         self.expansion = expansion
         self.down_sample = down_sample
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False)
@@ -22,19 +23,22 @@ class BasicBlock(nn.Module):
         out = self.bn2(out)
         if self.down_sample:
             identity = self.down_sample(x)
+
         out += identity
         out = self.relu(out)
         return out
 
 
 class ResNet18(nn.Module):
-    def __init__(self, block=BasicBlock, channels=3, layers=None, num_classes=400):
+    def __init__(self, block=BasicBlock, num_classes=400, layers=None, expansion=1):
         super(ResNet18, self).__init__()
+
         if layers is None:
             layers = [2, 2, 2, 2]
-        self.expansion = 1
+
+        self.expansion = expansion
         self.in_channels = 64
-        self.conv1 = nn.Conv2d(in_channels=channels, out_channels=self.in_channels, kernel_size=7, stride=2,
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=self.in_channels, kernel_size=7, stride=2,
                                padding=3, bias=False)
         self.bn1 = nn.BatchNorm2d(self.in_channels)
         self.relu = nn.ReLU(inplace=True)
