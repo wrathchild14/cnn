@@ -3,6 +3,7 @@
 # Data that needs to be loaded
 resnet/bird_data
 segmentation/data
+colorization/data
 
 # Python stuff
 __pycache__/
