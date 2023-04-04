@@ -1,10 +1,10 @@
 from torch import nn
 
 # Take the basic block from the original resnet network
-from resnet.resnet_18 import BasicBlock
+from resnet.resnet_18 import BasicBlock, ResNet18
 
 
-class ResNet18FCN(nn.Module):
+class ResNet18FCN(ResNet18):
     def __init__(self, block=BasicBlock, channels=3, layers=None, num_classes=13):
         super(ResNet18FCN, self).__init__()
         if layers is None:
@@ -23,20 +23,6 @@ class ResNet18FCN(nn.Module):
         # Replace the avg_pool and fc layer
         self.conv5 = nn.Conv2d(512 * self.expansion, num_classes, kernel_size=1)
         self.up_sample = nn.Upsample(scale_factor=32, mode='bilinear', align_corners=True)
-
-    def make_layer(self, block, out_channels, blocks, stride=1):
-        down_sample = None
-        if stride != 1:
-            down_sample = nn.Sequential(
-                nn.Conv2d(self.in_channels, out_channels * self.expansion, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_channels * self.expansion),
-            )
-        layers = [block(self.in_channels, out_channels, stride, self.expansion, down_sample)]
-        self.in_channels = out_channels * self.expansion
-        for i in range(1, blocks):
-            layers.append(block(self.in_channels, out_channels, expansion=self.expansion))
-        # * creates new list
-        return nn.Sequential(*layers)
 
     def forward(self, x):
         x = self.conv1(x)
