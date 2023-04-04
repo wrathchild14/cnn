@@ -2,10 +2,10 @@ from torch import nn, cat
 
 
 class UNet(nn.Module):
-    def __init__(self, in_channels, out_channels, colorization=False):
+    def __init__(self, in_channels, out_channels, skip_connection=True):
         super(UNet, self).__init__()
 
-        self.colorization = colorization
+        self.skip_connection = skip_connection
         self.down1 = EncodeDown(in_channels, 64)
         self.down2 = EncodeDown(64, 128)
         self.down3 = EncodeDown(128, 256)
@@ -13,16 +13,16 @@ class UNet(nn.Module):
 
         self.double_conv = DoubleConv(512, 1024)
 
-        if self.colorization:
-            self.up1 = DecodeUpWithoutSkip(1024, 512)
-            self.up2 = DecodeUpWithoutSkip(512, 256)
-            self.up3 = DecodeUpWithoutSkip(256, 128)
-            self.up4 = DecodeUpWithoutSkip(128, 64)
-        else:
+        if self.skip_connection:
             self.up1 = DecodeUp(1024, 512)
             self.up2 = DecodeUp(512, 256)
             self.up3 = DecodeUp(256, 128)
             self.up4 = DecodeUp(128, 64)
+        else:
+            self.up1 = DecodeUpWithoutSkip(1024, 512)
+            self.up2 = DecodeUpWithoutSkip(512, 256)
+            self.up3 = DecodeUpWithoutSkip(256, 128)
+            self.up4 = DecodeUpWithoutSkip(128, 64)
 
         self.output = nn.Conv2d(64, out_channels, kernel_size=1, padding=0)
 
@@ -32,16 +32,16 @@ class UNet(nn.Module):
         s3, p3 = self.down3(p2)
         s4, p4 = self.down4(p3)
         b = self.double_conv(p4)
-        if self.colorization:
-            d1 = self.up1(b)
-            d2 = self.up2(d1)
-            d3 = self.up3(d2)
-            d4 = self.up4(d3)
-        else:
+        if self.skip_connection:
             d1 = self.up1(b, s4)
             d2 = self.up2(d1, s3)
             d3 = self.up3(d2, s2)
             d4 = self.up4(d3, s1)
+        else:
+            d1 = self.up1(b)
+            d2 = self.up2(d1)
+            d3 = self.up3(d2)
+            d4 = self.up4(d3)
         output = self.output(d4)
         return output
 
@@ -73,8 +73,8 @@ class EncodeDown(nn.Module):
         self.conv = DoubleConv(in_channels, out_channels)
         self.pool = nn.MaxPool2d((2, 2))
 
-    def forward(self, inputs):
-        x = self.conv(inputs)
+    def forward(self, x):
+        x = self.conv(x)
         pool = self.pool(x)
         return x, pool
 
