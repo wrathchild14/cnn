@@ -2,3 +2,4 @@
 ResNet18/bird_data
 __pycache__/
 *.py[cod]
+ResNet18FCN/data
