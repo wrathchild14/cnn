@@ -1,4 +1,4 @@
-from torch import nn, flatten, mean
+from torch import nn, flatten
 
 
 class BasicBlock(nn.Module):
