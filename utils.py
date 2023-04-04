@@ -42,16 +42,20 @@ def test_bird_model(net, curr_data_loader, val_test="val"):
     return gt_array, pred_array
 
 
-def train_bird_model(net, loaded_data, epochs, lr):
+def train_bird_model(net, loaded_data, batch_size, epochs, lr):
+    BATCH_SIZE = batch_size  # temp
     train_set, train_loader, test_set, test_loader, val_set, val_loader = loaded_data
 
     net.cuda()
-
     # Define the loss function
     criterion = nn.CrossEntropyLoss()
 
     # Initialize the optimizer
     optimizer = optim.Adam(net.parameters(), lr=lr)
+
+    # unneeded for now
+    # scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[80, 120], gamma=0.1)
+    # scheduler = StepLR(optimizer, step_size=10, gamma=0.1)
 
     for epoch in range(epochs):
         with tqdm(total=len(train_set), desc='Epoch: ' + str(epoch) + "/" + str(epochs), unit='img') as prog_bar:
@@ -76,6 +80,7 @@ def train_bird_model(net, loaded_data, epochs, lr):
                 prog_bar.set_postfix(**{'loss': loss.data.cpu().detach().numpy()})
                 prog_bar.update(BATCH_SIZE)
 
+        # scheduler.step()
         if epoch % 5 == 0:
             test_bird_model(net, val_loader)
     test_bird_model(net, test_loader)
