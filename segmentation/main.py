@@ -1,8 +1,7 @@
 import torch
 
-from ResNet18FCN.segmentation_dataset import SegmentationDataset
-from ResNet18FCN.utils import train, test
-from network import ResNet18FCN
+from resnet_18_fcn import ResNet18FCN
+from segmentation.utils import SegmentationDataset, train, test
 
 if __name__ == '__main__':
     net = ResNet18FCN()

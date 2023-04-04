@@ -1,5 +1,9 @@
 .idea/
-ResNet18/bird_data
+
+# Data that needs to be loaded
+resnet/bird_data
+segmentation/data
+
+# Python stuff
 __pycache__/
 *.py[cod]
-ResNet18FCN/data

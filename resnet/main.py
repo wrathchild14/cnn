@@ -1,4 +1,4 @@
-from network import ResNet18
+from resnet_18 import ResNet18
 from utils import train_bird_model, load_data
 
 if __name__ == '__main__':

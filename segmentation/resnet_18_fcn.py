@@ -1,7 +1,7 @@
 from torch import nn
 
-# Take the basic block from the original ResNet18 network
-from ResNet18.network import BasicBlock
+# Take the basic block from the original resnet network
+from resnet.resnet_18 import BasicBlock
 
 
 class ResNet18FCN(nn.Module):
