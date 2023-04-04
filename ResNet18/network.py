@@ -28,7 +28,7 @@ class BasicBlock(nn.Module):
 
 
 class ResNet18(nn.Module):
-    def __init__(self, block=BasicBlock, channels=3, layers=None, num_classes=1000):
+    def __init__(self, block=BasicBlock, channels=3, layers=None, num_classes=400):
         super(ResNet18, self).__init__()
         if layers is None:
             layers = [2, 2, 2, 2]

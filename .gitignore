@@ -1,4 +1,4 @@
 .idea/
-bird_data
+ResNet18/bird_data
 __pycache__/
 *.py[cod]
