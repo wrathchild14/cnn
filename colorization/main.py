@@ -1,7 +1,7 @@
 import torch
 
 from colorization.utils import ColorizationDataset, train, test
-from segmentation.unet import UNet
+from unet import UNet
 
 if __name__ == '__main__':
     net = UNet(in_channels=1, out_channels=3, skip_connection=True)
