@@ -62,6 +62,7 @@ def train(net, train_data, epochs=5, learning_rate=0.0001):
     trainset, trainloader = train_data
     net.cuda()
     optimizer = optim.Adam(net.parameters(), lr=learning_rate)
+    # optimizer = optim.SGD(net.parameters(), lr=learning_rate)
 
     for epoch in range(epochs):  # loop over the dataset multiple times
         running_loss = 0.0

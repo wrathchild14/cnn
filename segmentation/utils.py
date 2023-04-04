@@ -47,6 +47,7 @@ def train(net, train_data, epochs=2, learning_rate=0.0001):
     criterion = nn.CrossEntropyLoss()
 
     optimizer = optim.Adam(net.parameters(), lr=learning_rate)
+    # optimizer = optim.SGD(net.parameters(), lr=learning_rate)
 
     for epoch in range(epochs):  # loop over the dataset multiple times
         with tqdm(total=len(trainset), desc=str(epoch) + "/" + str(epochs), miniters=int(50), unit='img') as prog_bar:
